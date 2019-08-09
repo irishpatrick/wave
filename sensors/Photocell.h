@@ -25,4 +25,5 @@ private:
     int m_delta;
     int m_last_delta;
     int m_th;
+    int m_initialized;
 };

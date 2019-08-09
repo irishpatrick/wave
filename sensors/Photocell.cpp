@@ -9,7 +9,8 @@ Photocell::Photocell() :
     m_pin(-1),
     m_delta(0),
     m_last_delta(0),
-    m_th(50)
+    m_th(50),
+    m_initialized(0)
 {
 }
 
@@ -19,6 +20,7 @@ Photocell::~Photocell()
 
 void Photocell::init(int pin)
 {
+    m_initialized = 1;
     pinMode(pin, INPUT);
     m_pin = pin;
     m_min = analogRead(m_pin);
@@ -27,9 +29,18 @@ void Photocell::init(int pin)
 
 void Photocell::calibrate()
 {
-    int raw = analogRead(m_pin);
-    m_min = min(m_min, raw);
-    m_max = max(m_max, raw);
+    if (m_initialized)
+    {
+        m_initialized = 0;
+        m_min = analogRead(m_pin);
+        m_max = m_min;
+    }
+    else
+    {
+        int raw = analogRead(m_pin);
+        m_min = min(m_min, raw);
+        m_max = max(m_max, raw);
+    }
 }
 
 void Photocell::setThreshold(int val)
