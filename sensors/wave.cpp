@@ -16,7 +16,6 @@ int timeout = 0;
 void setup()
 {
     Serial.begin(9600);
-    pinMode(0, INPUT);
     left.init(0);
     left.setThreshold(50);
     right.setThreshold(50);
@@ -25,6 +24,14 @@ void setup()
     green.init(2, false);
     yellow.init(3, false);
     red.init(4, false);
+
+    green.on();
+    yellow.on();
+    red.on();
+    delay(1000);
+    green.off();
+    yellow.off();
+    red.off();
 }
 
 void loop()
@@ -33,6 +40,7 @@ void loop()
 
     if (calibrate == HIGH)
     {
+        yellow.on();
         left.calibrate();
         right.calibrate();
     }
